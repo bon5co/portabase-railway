@@ -14,7 +14,7 @@ if [ -z "${DATABASE_URL:-}" ]; then
   [ -n "${DB_PASSWORD:-}" ] || fail "DB_PASSWORD is empty"
   export DATABASE_URL="postgresql://${DB_USER:-portabase}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME:-portabase}?schema=public"
 fi
-until pg_isready -q -d "$DATABASE_URL"; do
+until pg_isready -q -d "${DATABASE_URL%%\?*}"; do
   echo "railway-entrypoint: waiting for the database"
   sleep 2
 done
